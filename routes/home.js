@@ -1,9 +1,9 @@
 import express from 'express';
-router = express.Router();
+import * as homeController from '../controllers/home.js';
 
-import homeController from '../controllers/home';
+const router = express.Router();
 
-router.get('/', homeController.getIndex);
+router.get('/', homeController.getHomePage);
 router.get('/login', homeController.getLogin);
 router.post('/login', homeController.postLogin);
 router.get('/logout', homeController.logout);

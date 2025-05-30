@@ -12,8 +12,13 @@ dotenv.config({path: './config/.env'})
 
 connectDB();
 
-//routers
+app.use(express.static('public'));
 
+//routers
+import {router as homeRoutes} from './routes/home.js';
+
+//use routers
+app.use('/', homeRoutes);
 
 app.listen(8000, () => {
     console.log('server running');
