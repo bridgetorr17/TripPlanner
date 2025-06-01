@@ -6,24 +6,4 @@ const getHomePage = (req, res) => {
     res.sendFile(pathName);
 }
 
-const getLogin = (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'home.html'));
-}
-
-const postLogin = (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'home.html'));
-}
-
-const logout = (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'home.html'));
-}
-
-const getSignup = (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'home.html'));
-}
-
-const postSignup = (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'home.html'));
-}
-
-export {getHomePage, getLogin, postLogin, logout, getSignup, postSignup};
+export {getHomePage};

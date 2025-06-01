@@ -1,13 +1,15 @@
 import express from 'express';
 import * as homeController from '../controllers/home.js';
+import * as authController from '../controllers/auth.js';
+import { ensureAuth } from '../middleware/auth.js'
 
 const router = express.Router();
 
 router.get('/', homeController.getHomePage);
-router.get('/login', homeController.getLogin);
-router.post('/login', homeController.postLogin);
-router.get('/logout', homeController.logout);
-router.get('/signup', homeController.getSignup);
-router.post('/signup', homeController.postSignup);
+router.get('/login', authController.getLogin);
+router.post('/login', authController.postLogin);
+router.get('/logout', authController.logout);
+router.get('/signup', authController.getSignup);
+router.post('/signup', authController.postSignup);
 
 export {router}
