@@ -3,25 +3,49 @@ import express from 'express';
 const app = express();
 
 //mongodb
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 import {connectDB} from './config/database.js';
 
 //env variables
 import dotenv from 'dotenv';
 dotenv.config({path: './config/.env'})
 
-connectDB();
+//auth
+import passport from './config/passport.js'
+import session from 'express-session'
+import MongoStore from 'connect-mongo'
 
-app.set('view enginer', 'ejs')
-app.use(express.static('public'));
+import flash from 'express-flash'
 
 //routers
 import {router as homeRoutes} from './routes/home.js';
 import {router as dashboardRoutes} from './routes/dashboard.js';
 
+connectDB();
+
+app.set('view engine', 'ejs')
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+
+//sessions
+app.use(
+    session({
+        secret: 'keyboard cat',
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({ mongoUrl: mongoose.connection._connectionString})
+    })
+);
+
+//passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
 //use routers
 app.use('/', homeRoutes);
-app.use('/dashboard', dashboardRoutes)
+app.use('/dashboard', dashboardRoutes);
 
 app.listen(8000, () => {
     console.log('server running');

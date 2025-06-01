@@ -1,4 +1,4 @@
-export const getDashboard = (req, res) => {
+const getDashboard = (req, res) => {
     try{
         res.render('dashboard.ejs', { personalTrips: [] })
     }
@@ -7,7 +7,7 @@ export const getDashboard = (req, res) => {
     }
 }
 
-export const getUserTrips = async (req, res) => {
+const getUserTrips = async (req, res) => {
     try{
         res.render('userTrips', { trips: [] });
     }
@@ -16,7 +16,7 @@ export const getUserTrips = async (req, res) => {
     }
 }
 
-export const getSharedTrips = async (req, res) => {
+const getSharedTrips = async (req, res) => {
     try{
         res.render('sharedTrips', { trips: [] });
     }
@@ -24,3 +24,5 @@ export const getSharedTrips = async (req, res) => {
         console.error(err);
     }
 }
+
+export { getDashboard, getUserTrips, getSharedTrips}
