@@ -34,7 +34,7 @@ app.use(
         secret: 'keyboard cat',
         resave: false,
         saveUninitialized: false,
-        store: MongoStore.create({ mongoUrl: mongoose.connection._connectionString})
+        store: MongoStore.create({ mongoUrl: process.env.DB_STRING })
     })
 );
 
