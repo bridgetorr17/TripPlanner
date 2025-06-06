@@ -20,6 +20,7 @@ import flash from 'express-flash'
 //routers
 import {router as homeRoutes} from './routes/home.js';
 import {router as dashboardRoutes} from './routes/dashboard.js';
+import {router as tripRoutes} from './routes/trips.js';
 
 connectDB();
 
@@ -46,6 +47,7 @@ app.use(flash());
 //use routers
 app.use('/', homeRoutes);
 app.use('/dashboard', dashboardRoutes);
+app.use('/trips', tripRoutes);
 
 app.listen(8000, () => {
     console.log('server running');

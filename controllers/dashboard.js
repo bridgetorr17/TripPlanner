@@ -1,6 +1,5 @@
 const getDashboard = (req, res) => {
     try{
-        console.log('rendering the dashboard')
         res.render('dashboard.ejs', { personalTrips: [] })
     }
     catch(err){

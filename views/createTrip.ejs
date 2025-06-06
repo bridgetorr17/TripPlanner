@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/trips/createNew" method="POST">
+        <input type="text" name="tripName" placeholder="Trip Name">
+        <input type="text" name="tripOrigin" placeholder="Where do you start?">
+        <div id="stopsContainer">
+            <label>Trip Stops:</label>
+        </div>
+        <button type="button" id="addStopsButton">Add Stop</button>
+        <input type="submit">
+    </form>
+
+    <script src="/js/main.js" type="application/javascript"></script>
+</body>
+</html>
