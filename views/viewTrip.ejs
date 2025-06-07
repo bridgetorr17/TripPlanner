@@ -6,13 +6,18 @@
     <title>Document</title>
 </head>
 <body>
-    <h1><%= name %>'s Trips Dashboard</h1>
+    <h1><%= trip.tripName %></h1>
     <a href="/trips/createNew">Start a new trip</a>
+    <a href="/dashboard">Go to Dashboard</a>
     <a href="/logout">Logout</a>
 
+    <h2>Starting in <%= trip.tripOrigin %></h2>
+
+    <span>We are going to</span>
+
     <ul>
-        <% for (let i = 0; i < userTrips.length; i++) { %>
-           <li><a href="/trips/<%= userTrips[i]._id %>"><%= userTrips[i].tripName %></a></li>
+        <% for (let i = 0; i < trip.tripStops.length; i++) { %>
+            <li><%= trip.tripStops[i] %></li>
         <% } %>
     </ul>
 </body>

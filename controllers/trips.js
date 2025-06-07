@@ -1,7 +1,14 @@
 import Trip from '../models/Trip.js';
 
-const getTrip = (req, res) => {
-
+const getTrip = async (req, res) => {
+    try{
+        const tripId = req.params.id;
+        const trip = await Trip.findById(tripId).lean();
+        res.render('viewTrip.ejs', {trip: trip})
+    }
+    catch(err){
+        console.error(err);
+    }
 }
 
 const getCreateNewTrip = async (req, res) => {

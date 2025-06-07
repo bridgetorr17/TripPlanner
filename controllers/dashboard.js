@@ -1,6 +1,12 @@
-const getDashboard = (req, res) => {
+import Trip from '../models/Trip.js'
+
+const getDashboard = async (req, res) => {
     try{
-        res.render('dashboard.ejs', { personalTrips: [] })
+        let userTrips = await Trip.find({createdBy:req.user.id})
+        console.log(userTrips);
+        res.render('dashboard.ejs', { 
+            name: req.user.userName,
+            userTrips: userTrips});
     }
     catch(err){
         console.error(err);
