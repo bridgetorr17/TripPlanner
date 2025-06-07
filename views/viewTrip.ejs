@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
     <title>Document</title>
 </head>
-<body>
+<body data-trip-id="<%= trip._id%>">
     <h1><%= trip.tripName %></h1>
     <a href="/trips/createNew">Start a new trip</a>
     <a href="/dashboard">Go to Dashboard</a>
@@ -20,5 +21,15 @@
             <li><%= trip.tripStops[i] %></li>
         <% } %>
     </ul>
+    
+    <div id="editsContainer">
+
+    </div>
+
+    <button type="button" class="hidden" id="addStopsEdit">Add Stop</button>
+    <button type="button" class="hidden" id="saveEdits">Save edits</button>
+    <button id="editTrip" class="">Edit this trip</button>
+
+    <script src="/js/editTrip.js" type="application/javascript"></script>
 </body>
 </html>

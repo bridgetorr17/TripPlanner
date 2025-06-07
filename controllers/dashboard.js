@@ -3,7 +3,6 @@ import Trip from '../models/Trip.js'
 const getDashboard = async (req, res) => {
     try{
         let userTrips = await Trip.find({createdBy:req.user.id})
-        console.log(userTrips);
         res.render('dashboard.ejs', { 
             name: req.user.userName,
             userTrips: userTrips});
