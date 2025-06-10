@@ -70,4 +70,15 @@ const updateTrip = async (req, res) => {
     }
 }
 
-export {getTrip, getCreateNewTrip, postCreateNewTrip, updateTrip};
+const deleteTrip = async (req, res) => {
+    try{
+        await Trip.findOneAndDelete({_id: req.body.tripId});
+        console.log('Deleted Trip');
+        res.redirect('/dashboard');
+    }
+    catch(err){
+        console.error(err);
+    }
+}
+
+export {getTrip, getCreateNewTrip, postCreateNewTrip, updateTrip, deleteTrip};

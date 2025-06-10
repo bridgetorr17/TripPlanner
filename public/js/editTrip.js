@@ -2,6 +2,7 @@ document.getElementById('editTrip').addEventListener('click', () => {
     document.getElementById('addStopsEdit').classList = '';
     document.getElementById('saveEdits').classList = '';
     document.getElementById('editTrip').classList = 'hidden';
+    document.getElementById('deleteTrip').classList = '';
 })
 
 document.getElementById('addStopsEdit').addEventListener('click', () => {
@@ -39,6 +40,29 @@ document.getElementById('saveEdits').addEventListener('click', async () => {
             console.error('update failed', errorText);
         }
         window.location.reload();
+    }
+    catch(err){
+        console.error(err);
+    }
+});
+
+document.getElementById('deleteTrip').addEventListener('click', async () => {
+    try{
+        const tripId = document.body.dataset.tripId;
+        const response = await fetch('/trips/delete', {
+            method: 'DELETE',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({
+                'tripId': tripId
+            })
+        })
+        
+        if (response.redirected){
+            window.location.href = response.url;
+        }
+        else {
+            window.location.href = '/dashboard';
+        }
     }
     catch(err){
         console.error(err);
