@@ -3,6 +3,9 @@ document.getElementById('editTrip').addEventListener('click', () => {
     document.getElementById('saveEdits').classList = '';
     document.getElementById('editTrip').classList = 'hidden';
     document.getElementById('deleteTrip').classList = '';
+    document.querySelectorAll('img.trash').forEach(img => {
+        img.classList.remove('hidden');
+    })
 })
 
 document.getElementById('addStopsEdit').addEventListener('click', () => {
@@ -12,7 +15,15 @@ document.getElementById('addStopsEdit').addEventListener('click', () => {
     input.name = 'tripStops';
     input.placeholder = 'Enter a stop';
     container.appendChild(input)
-})
+});
+
+document.querySelectorAll('img.trash').forEach(trashIcon => {
+    trashIcon.addEventListener('click', function() {
+        console.log('trash was pressed')
+        const location = this.closest('li.location');
+        location.classList.add('remove');
+    }); 
+});
 
 document.getElementById('saveEdits').addEventListener('click', async () => {
     const tripId = document.body.dataset.tripId;
@@ -22,14 +33,22 @@ document.getElementById('saveEdits').addEventListener('click', async () => {
     const inputsCleaned = Array.from(inputs)
                                 .map(input => input.value.trim())
                                 .filter(val => val.length > 0);
-    console.log(tripId);
+
+    //get all stops that were not removed
+    const remainingStops = Array.from(document.querySelectorAll('li.location:not(.remove) span'))
+                                .map(span => span.textContent.trim())
+                                .filter(val => val.length > 0);
+
+    const updatedStops = remainingStops.concat(inputsCleaned);
+
+    console.log(updatedStops);
     try{
         const response = await fetch(`/trips/edit/${tripId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({newStops: inputsCleaned})
+            body: JSON.stringify({newStops: updatedStops})
         });
 
         if(response.ok){
@@ -56,7 +75,7 @@ document.getElementById('deleteTrip').addEventListener('click', async () => {
                 'tripId': tripId
             })
         })
-        
+
         if (response.redirected){
             window.location.href = response.url;
         }

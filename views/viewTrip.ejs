@@ -18,7 +18,10 @@
 
     <ul>
         <% for (let i = 0; i < trip.tripStops.length; i++) { %>
-            <li><%= trip.tripStops[i] %></li>
+            <li class="location">
+                <span><%= trip.tripStops[i] %></span>
+                <img src="/images/trash.jpg" alt="" class="trash hidden">
+            </li>
         <% } %>
     </ul>
     

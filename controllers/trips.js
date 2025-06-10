@@ -55,11 +55,8 @@ const updateTrip = async (req, res) => {
 
         await Trip.updateOne(
             {_id: tripId},
-            {$push : {
-                tripStops : {
-                    $each: newStops,
-                    $position: trip.tripStops.length
-                }
+            {$set: {
+                tripStops: newStops
             }
         });
 
