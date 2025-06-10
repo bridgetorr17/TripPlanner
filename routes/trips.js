@@ -6,8 +6,9 @@ const router = express.Router();
 
 router.get('/createNew', tripController.getCreateNewTrip);
 router.post('/createNew', tripController.postCreateNewTrip);
+router.get('/edit/aiSuggestion', tripController.getSuggestion);
+router.delete('/delete', tripController.deleteTrip);
 router.get('/:id', ensureAuth, tripController.getTrip);
 router.put('/edit/:id', tripController.updateTrip);
-router.delete('/delete', tripController.deleteTrip);
 
 export {router};

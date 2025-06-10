@@ -1,13 +1,16 @@
+//edit trip buttons
 document.getElementById('editTrip').addEventListener('click', () => {
     document.getElementById('addStopsEdit').classList = '';
     document.getElementById('saveEdits').classList = '';
     document.getElementById('editTrip').classList = 'hidden';
     document.getElementById('deleteTrip').classList = '';
+    document.getElementById('aiLocationSuggestion').classList = '';
     document.querySelectorAll('img.trash').forEach(img => {
         img.classList.remove('hidden');
     })
 })
 
+//add stops
 document.getElementById('addStopsEdit').addEventListener('click', () => {
     const input = document.createElement('input');
     const container = document.getElementById('editsContainer');
@@ -17,6 +20,7 @@ document.getElementById('addStopsEdit').addEventListener('click', () => {
     container.appendChild(input)
 });
 
+//remove icons
 document.querySelectorAll('img.trash').forEach(trashIcon => {
     trashIcon.addEventListener('click', function() {
         console.log('trash was pressed')
@@ -25,6 +29,7 @@ document.querySelectorAll('img.trash').forEach(trashIcon => {
     }); 
 });
 
+//save edits actions
 document.getElementById('saveEdits').addEventListener('click', async () => {
     const tripId = document.body.dataset.tripId;
 
@@ -65,6 +70,14 @@ document.getElementById('saveEdits').addEventListener('click', async () => {
     }
 });
 
+//ai GET request (from server)
+document.getElementById('aiLocationSuggestion').addEventListener('click', async () => {
+    const response = await fetch('trips/edit/aiSuggestion');
+    const location = await response.json();
+    console.log(location);
+})
+
+//DELETE request
 document.getElementById('deleteTrip').addEventListener('click', async () => {
     try{
         const tripId = document.body.dataset.tripId;

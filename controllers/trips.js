@@ -1,4 +1,7 @@
 import Trip from '../models/Trip.js';
+import { GoogleGenAI } from '@google/genai';
+import dotenv from 'dotenv';
+dotenv.config({path: './config/.env'})
 
 const getTrip = async (req, res) => {
     try{
@@ -67,6 +70,20 @@ const updateTrip = async (req, res) => {
     }
 }
 
+const getSuggestion = async (req, res) => {
+    try{
+        const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY});
+
+        const tripId = req.params.id;
+        const tripStops = await Trip.findById(tripId).tripStops;
+
+        console.log(tripStops);
+    }
+    catch(err){
+        console.error(err);
+    }
+}
+
 const deleteTrip = async (req, res) => {
     try{
         await Trip.findOneAndDelete({_id: req.body.tripId});
@@ -78,4 +95,4 @@ const deleteTrip = async (req, res) => {
     }
 }
 
-export {getTrip, getCreateNewTrip, postCreateNewTrip, updateTrip, deleteTrip};
+export {getTrip, getCreateNewTrip, postCreateNewTrip, updateTrip, getSuggestion, deleteTrip};
