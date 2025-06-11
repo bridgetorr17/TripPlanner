@@ -32,8 +32,6 @@ const postCreateNewTrip = async (req, res) => {
             createdBy: req.user._id
         });
 
-        console.log('Trip has been create');
-
         res.redirect('/dashboard');
     }
     catch(err) {
@@ -75,9 +73,39 @@ const getSuggestion = async (req, res) => {
         const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY});
 
         const tripId = req.params.id;
-        const tripStops = await Trip.findById(tripId).tripStops;
+        const trip = await Trip.findById(tripId);
+        let tripStops = trip.tripStops;
 
-        console.log(tripStops);
+        //request to gemini
+        const response = await ai.models.generateContent({
+            model: "gemini-2.0-flash",
+            contents: `Consider these locations on a trip: ${tripStops}. Return the full trip, 
+            with one added location at the logical positin in the array. Include the reason why 
+            this would be a good addition in the 'reason' property. You should only include the 
+            reason for your addition, not the already exisiting locations.`,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: 'object',
+                    properties: {
+                        tripStops: {
+                            type: 'array',
+                            items: { type: 'string'}
+                        },
+                        reason: {type: 'string'},
+                        addedStop: {type: 'string'}
+                    },
+                    required: ['tripStops', 'reason']
+                }
+            }
+        });
+
+        const responseJSON = {
+            'aiSuggestion' : response.text,
+            'originalTrip' : tripStops
+        }
+
+        res.status(200).json(responseJSON);
     }
     catch(err){
         console.error(err);
@@ -87,7 +115,6 @@ const getSuggestion = async (req, res) => {
 const deleteTrip = async (req, res) => {
     try{
         await Trip.findOneAndDelete({_id: req.body.tripId});
-        console.log('Deleted Trip');
         res.redirect('/dashboard');
     }
     catch(err){

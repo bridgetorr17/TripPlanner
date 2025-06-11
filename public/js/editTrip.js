@@ -1,3 +1,4 @@
+
 //edit trip buttons
 document.getElementById('editTrip').addEventListener('click', () => {
     document.getElementById('addStopsEdit').classList = '';
@@ -23,7 +24,6 @@ document.getElementById('addStopsEdit').addEventListener('click', () => {
 //remove icons
 document.querySelectorAll('img.trash').forEach(trashIcon => {
     trashIcon.addEventListener('click', function() {
-        console.log('trash was pressed')
         const location = this.closest('li.location');
         location.classList.add('remove');
     }); 
@@ -46,7 +46,6 @@ document.getElementById('saveEdits').addEventListener('click', async () => {
 
     const updatedStops = remainingStops.concat(inputsCleaned);
 
-    console.log(updatedStops);
     try{
         const response = await fetch(`/trips/edit/${tripId}`, {
             method: 'PUT',
@@ -72,9 +71,67 @@ document.getElementById('saveEdits').addEventListener('click', async () => {
 
 //ai GET request (from server)
 document.getElementById('aiLocationSuggestion').addEventListener('click', async () => {
-    const response = await fetch('trips/edit/aiSuggestion');
-    const location = await response.json();
-    console.log(location);
+    const tripId = document.body.dataset.tripId;
+    const response = await fetch(`/trips/edit/aiSuggestion/${tripId}`);
+    const sug = await response.json();
+    
+    const parsedSuggestion = JSON.parse(sug.aiSuggestion);
+
+    let container = document.getElementById('aiSuggestion')
+    let spanLoc = document.createElement('span');
+    let reasonLoc = document.createElement('p');
+    let question = document.createElement('span');
+    spanLoc.innerHTML = 'Suggested stop: ' + parsedSuggestion.addedStop;
+    reasonLoc.innerHTML = 'Reason: ' + parsedSuggestion.reason;
+    question.innerHTML = 'Do you want to add this stop to the trip?'
+    container.append(spanLoc);
+    container.append(reasonLoc);
+    container.append(question);
+
+    //user chooses if they want to add the stop
+    let yes = document.createElement('button');
+    let no = document.createElement('button');
+    yes.innerHTML = 'Yes';
+    no.innerHTML = 'No';
+
+    yes.addEventListener('click', () => {
+        const ul = document.querySelector('ul');
+        ul.innerHTML = ''; // Clear current list
+
+        // Rebuild list from updated stops
+        parsedSuggestion.tripStops.forEach(stop => {
+            const li = document.createElement('li');
+            li.classList.add('location');
+
+            const span = document.createElement('span');
+            span.textContent = stop;
+
+            const img = document.createElement('img');
+            img.src = '/images/trash.jpg';
+            img.alt = 'Remove stop';
+            img.classList.add('trash');
+
+            // Add remove functionality
+            img.addEventListener('click', function () {
+                const location = this.closest('li.location');
+                location.classList.add('remove');
+            });
+
+            li.appendChild(span);
+            li.appendChild(img);
+            ul.appendChild(li);
+        });
+
+        // Clear the AI suggestion UI
+        container.innerHTML = 'AI stop added in the correct location. You can now save your edits.';
+    });
+
+
+    no.addEventListener('click', () => {
+        container.innerHTML = 'Ok, thanks for using our AI suggestion';
+    });
+    container.append(yes);
+    container.append(no);
 })
 
 //DELETE request
