@@ -1,11 +1,12 @@
 import express from 'express';
 import * as homeController from '../controllers/home.js';
 import * as authController from '../controllers/auth.js';
+import { forwardAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
 router.get('/', homeController.getHomePage);
-router.get('/login', homeController.getLoginPage);
+router.get('/login', forwardAuth, homeController.getLoginPage);
 router.post('/login', authController.postLogin);
 router.get('/logout', authController.logout);
 router.get('/signup', authController.getSignup);

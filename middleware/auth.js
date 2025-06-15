@@ -1,10 +1,19 @@
 const ensureAuth = (req, res, next) => {
-        if(req.isAuthenticated()){
-            return next();
-        }
-        else{
-            res.redirect('/')
-        }
+    if(req.isAuthenticated()){
+        return next();
     }
+    else{
+        res.redirect('/')
+    }
+}
 
-export { ensureAuth }
+const forwardAuth = (req, res, next) => {
+    if(req.isAuthenticated()){
+        res.redirect('/dashboard');
+    }
+    else{
+        return next();
+    }
+}
+
+export { ensureAuth, forwardAuth }
