@@ -6,14 +6,4 @@ const getHomePage = (req, res) => {
     res.sendFile(pathName);
 }
 
-const getLoginPage = (req, res) => {
-    try{
-        console.log('rendering the login')
-        res.render('login.ejs', { error: [] })
-    }
-    catch(err){
-        console.error(err);
-    }
-}
-
-export {getHomePage, getLoginPage};
+export {getHomePage};
