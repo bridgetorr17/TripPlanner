@@ -6,7 +6,7 @@ import { forwardAuth } from '../middleware/auth.js';
 const router = express.Router();
 
 router.get('/', homeController.getHomePage);
-router.get('/login', forwardAuth, homeController.getLoginPage);
+router.get('/login', authController.getLogin);
 router.post('/login', authController.postLogin);
 router.get('/logout', authController.logout);
 router.get('/signup', authController.getSignup);

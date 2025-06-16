@@ -30,12 +30,16 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 //sessions
+const store = MongoStore.create({mongoUrl: process.env.DB_STRING})
 app.use(
     session({
         secret: 'keyboard cat',
         resave: false,
         saveUninitialized: false,
-        store: MongoStore.create({ mongoUrl: process.env.DB_STRING })
+        store: store,
+        cookie:{
+            maxAge: 24 * 60 * 60 * 1000
+        }
     })
 );
 

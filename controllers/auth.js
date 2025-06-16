@@ -4,7 +4,9 @@ import User from '../models/User.js';
 import { networkInterfaces } from 'os';
 
  const getLogin = (req, res) => {
-    if (req.user) {
+  console.log('req.isAuth on the get login is ' + req.isAuthenticated())
+    if (req.isAuthenticated()) {
+      console.log('this user is already logged in, return them to the dashboard');
       return res.redirect('/dashboard')
     }
     res.render('login', { })
@@ -21,44 +23,32 @@ const postLogin = (req, res, next) => {
     }
     req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
   
-    // passport.authenticate('local', (err, user, info) => {
-    //   if (err) { return next(err) }
-    //   if (!user) {
-    //     req.flash('errors', info)
-    //     return res.redirect('/login')
-    //   }
-    //   req.logIn(user, (err) => {
-    //     if (err) { return next(err) }
-    //     req.flash('success', { msg: 'Success! You are logged in.' })
-    //     res.redirect(req.session.returnTo || '/dashboard')
-    //   })
-    // })(req, res, next)
-    passport.authenticate('local', {
-      successReturnToOrRedirect: '/dashboard',
-      failureRedirect: '/login',
-      failureFlash: true,
-      keepSessionInfo: true,
-    })(req, res, next);
+    passport.authenticate('local', (err, user, info) => {
+      if (err) { return next(err) }
+      console.log('user is ' + user);
+      if (!user) {
+        req.flash('errors', info)
+        console.log('sending to login page')
+        return res.redirect('/login')
+      }
+      req.logIn(user, (err) => {
+        if (err) { return next(err) }
+        req.flash('success', { msg: 'Success! You are logged in.' })
+        console.log('req.session.returnTo is ' + req.session.returnTo);
+        res.redirect(req.session.returnTo || '/dashboard')
+      })
+    })(req, res, next)
   }
   
-const logout = (req, res, next) => {
-    console.log('session might not be defined', req.session);
-    req.logout((err) => {
-        if(err) { 
-            console.error('Logout error', err)
-            return next(err) 
-        }
-        console.log('after logout, session: ', req.session);
-        
-        req.session.destroy((err) => {
-            if (err){
-                console.log('Error : Failed to destroy the session during logout.', err)
-                return next(err)
-            }
-            //res.clearCookie('connect.sid');
-            res.redirect('/')
-        })
-        console.log('User has logged out.')
+const logout = (req, res) => {
+  console.log('here in the logout');
+    req.logout(() => {
+      console.log('User has logged out.')
+    })
+    req.session.destroy((err) => {
+      if (err) console.log('Error : Failed to destroy the session during logout.', err)
+      req.user = null
+      res.redirect('/')
     })
   }
   
