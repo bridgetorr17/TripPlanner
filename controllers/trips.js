@@ -68,6 +68,31 @@ const updateTrip = async (req, res) => {
     }
 }
 
+const friends = async (req, res) => {
+    try{
+        const newContributors = req.body.newContributors;
+        const tripId = req.params.id;
+
+        if(!Array.isArray(newContributors)){
+            return res.status(400).sed('newStops must be an array');
+        }
+        
+        //trip that is being updated
+        const trip = await Trip.findById(tripId);
+
+        //find all the new contributors by id
+
+        //add new contributors to trip by id(if not already there)
+
+        if(!trip){
+            return res.status(404).send('Trip not found');
+        }
+    }
+    catch(err){
+        console.error(err);
+    }
+}
+
 const getSuggestion = async (req, res) => {
     try{
         const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY});

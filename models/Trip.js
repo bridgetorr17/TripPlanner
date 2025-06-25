@@ -14,7 +14,8 @@ const TripSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-    }
+    },
+    contributors: [mongoose.Schema.Types.ObjectId]
 });
 
 const Trip = mongoose.model('Trip', TripSchema);
