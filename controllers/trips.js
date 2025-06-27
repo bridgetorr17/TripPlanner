@@ -1,4 +1,5 @@
 import Trip from '../models/Trip.js';
+import User from '../models/User.js';
 import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 dotenv.config({path: './config/.env'})
@@ -24,12 +25,30 @@ const getCreateNewTrip = async (req, res) => {
 }
 
 const postCreateNewTrip = async (req, res) => {
+    let contributors = req.body.tripContributors;
+
+    if (!Array.isArray(contributors)) {
+        contributors = [contributors];
+    }
+
+    console.log(contributors);
+
+    const contributorDocs = 
+        await Promise.all(
+            contributors.map((cont) => {
+                console.log(`the first username is : ${cont}`);
+                return User.findOne({ userName: cont })
+            })
+        );
+
+    console.log(contributorDocs)
+
     try{
         await Trip.create({
             tripName: req.body.tripName,
             tripOrigin: req.body.tripOrigin,
             tripStops: Array.isArray(req.body.tripStops) ? req.body.tripStops : [req.body.tripStops],
-            createdBy: req.user._id
+            createdBy: req.user._id,
         });
 
         res.redirect('/dashboard');
@@ -68,10 +87,11 @@ const updateTrip = async (req, res) => {
     }
 }
 
-const friends = async (req, res) => {
+const addFriends = async (req, res) => {
     try{
         const newContributors = req.body.newContributors;
         const tripId = req.params.id;
+        console.log(`friends to add: ${newContributors}`)
 
         if(!Array.isArray(newContributors)){
             return res.status(400).sed('newStops must be an array');
@@ -147,4 +167,4 @@ const deleteTrip = async (req, res) => {
     }
 }
 
-export {getTrip, getCreateNewTrip, postCreateNewTrip, updateTrip, getSuggestion, deleteTrip};
+export {getTrip, getCreateNewTrip, postCreateNewTrip, updateTrip, addFriends, getSuggestion, deleteTrip};
