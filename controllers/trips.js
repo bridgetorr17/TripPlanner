@@ -33,15 +33,14 @@ const postCreateNewTrip = async (req, res) => {
 
     console.log(contributors);
 
-    const contributorDocs = 
+    const contributorIds = 
         await Promise.all(
-            contributors.map((cont) => {
+            contributors.map(async (cont) => {
                 console.log(`the first username is : ${cont}`);
-                return User.findOne({ userName: cont })
+                const user = await User.findOne({ userName: cont })
+                return user ? user._id : null;
             })
         );
-
-    console.log(contributorDocs)
 
     try{
         await Trip.create({
@@ -49,6 +48,7 @@ const postCreateNewTrip = async (req, res) => {
             tripOrigin: req.body.tripOrigin,
             tripStops: Array.isArray(req.body.tripStops) ? req.body.tripStops : [req.body.tripStops],
             createdBy: req.user._id,
+            contributors: contributorIds
         });
 
         res.redirect('/dashboard');
