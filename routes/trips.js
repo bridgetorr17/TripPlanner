@@ -10,5 +10,6 @@ router.get('/edit/aiSuggestion/:id', tripController.getSuggestion);
 router.delete('/delete', tripController.deleteTrip);
 router.get('/:id', ensureAuth, tripController.getTrip);
 router.put('/edit/:id', tripController.updateTrip);
+router.put('/edit/:id/friends', tripController.addFriends);
 
 export {router};
