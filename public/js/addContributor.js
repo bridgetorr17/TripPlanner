@@ -28,8 +28,15 @@ document.getElementById('saveContributors').addEventListener('click', async () =
             },
             body: JSON.stringify({newContributors: inputsCleaned})
         });
+
+        if(response.ok){
+            const data = await response.json();
+            if(data.redirectTo){
+                window.location.href = data.redirectTo;
+            }
+        }
     }
     catch(err){
-        console.err(err);
+        console.log(err);
     }
 })
