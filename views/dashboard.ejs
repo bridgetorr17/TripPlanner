@@ -10,9 +10,17 @@
     <a href="/trips/createNew">Start a new trip</a>
     <a href="/logout">Logout</a>
 
+    <h2>My Trips</h2>
     <ul>
         <% for (let i = 0; i < userTrips.length; i++) { %>
            <li><a href="/trips/<%= userTrips[i]._id %>"><%= userTrips[i].tripName %></a></li>
+        <% } %>
+    </ul>
+
+    <h2>Shared Trips</h2>
+    <ul>
+        <% for (let i = 0; i < sharedTrips.length; i++) { %>
+           <li><a href=""><%= sharedTrips[i].tripName %></a></li>
         <% } %>
     </ul>
 </body>
