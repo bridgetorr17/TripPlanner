@@ -98,7 +98,7 @@ const postCreateNewTrip = async (req, res) => {
     }
 }
 
-const updateTrip = async (req, res) => {
+const putTripLocationUpdate = async (req, res) => {
     try{
         const newStops = req.body.newStops;
         const tripId = req.params.id;
@@ -127,7 +127,7 @@ const updateTrip = async (req, res) => {
     }
 }
 
-const addFriends = async (req, res) => {
+const putNewContributors = async (req, res) => {
     try{
         const newContributors = req.body.newContributors;
         const tripId = req.params.id;
@@ -222,7 +222,7 @@ export {getTrip,
         getSharedTrip, 
         getCreateNewTrip, 
         postCreateNewTrip, 
-        updateTrip, 
-        addFriends, 
+        putTripLocationUpdate, 
+        putNewContributors, 
         getSuggestion, 
         deleteTrip};

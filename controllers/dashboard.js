@@ -14,22 +14,4 @@ const getDashboard = async (req, res) => {
     }
 }
 
-const getUserTrips = async (req, res) => {
-    try{
-        res.render('userTrips', { trips: [] });
-    }
-    catch(err){
-        console.error(err);
-    }
-}
-
-const getSharedTrips = async (req, res) => {
-    try{
-        res.render('sharedTrips', { trips: [] });
-    }
-    catch(err){
-        console.error(err);
-    }
-}
-
-export { getDashboard, getUserTrips, getSharedTrips}
+export { getDashboard}

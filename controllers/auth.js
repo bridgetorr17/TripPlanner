@@ -40,7 +40,7 @@ const postLogin = (req, res, next) => {
     })(req, res, next)
   }
   
-const logout = (req, res) => {
+const getlogout = (req, res) => {
   console.log('here in the logout');
     req.logout(() => {
       console.log('User has logged out.')
@@ -109,4 +109,4 @@ const postSignup = async (req, res, next) => {
     }
   }
 
-  export { getLogin, postLogin, logout, getSignup, postSignup}
+  export { getLogin, postLogin, getlogout, getSignup, postSignup}
