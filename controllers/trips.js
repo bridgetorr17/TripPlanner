@@ -20,8 +20,32 @@ const getTrip = async (req, res) => {
             })
         )
 
-        console.log(contNames);
         res.render('viewTrip.ejs', {trip: trip,
+                                    creator: creatorName,
+                                    contributors: contNames
+        })
+    }
+    catch(err){
+        console.error(err);
+    }
+}
+
+const getSharedTrip = async (req, res) => {
+    try{
+        const tripId = req.params.id;
+        const trip = await Trip.findById(tripId).lean();
+        const creator = await User.findById(trip.createdBy);
+        const creatorName = creator.userName;
+
+        const tripContributors = trip.contributors;
+        
+        const contNames = await Promise.all(
+            tripContributors.map(async (cont) => {
+                const contUser = await User.findById(cont);
+                return contUser.userName;
+            })
+        )
+        res.render('viewSharedTrip.ejs', {trip: trip,
                                     creator: creatorName,
                                     contributors: contNames
         })
@@ -194,4 +218,11 @@ const deleteTrip = async (req, res) => {
     }
 }
 
-export {getTrip, getCreateNewTrip, postCreateNewTrip, updateTrip, addFriends, getSuggestion, deleteTrip};
+export {getTrip, 
+        getSharedTrip, 
+        getCreateNewTrip, 
+        postCreateNewTrip, 
+        updateTrip, 
+        addFriends, 
+        getSuggestion, 
+        deleteTrip};
