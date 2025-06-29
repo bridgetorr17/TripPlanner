@@ -9,6 +9,7 @@ router.post('/createNew', tripController.postCreateNewTrip);
 router.get('/edit/aiSuggestion/:id', tripController.getSuggestion);
 router.delete('/delete', tripController.deleteTrip);
 router.get('/:id', ensureAuth, tripController.getTrip);
+router.get('/sharedTrip/:id', tripController.getSharedTrip);
 router.put('/edit/:id', tripController.updateTrip);
 router.put('/edit/:id/friends', tripController.addFriends);
 

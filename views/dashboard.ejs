@@ -20,7 +20,7 @@
     <h2>Shared Trips</h2>
     <ul>
         <% for (let i = 0; i < sharedTrips.length; i++) { %>
-           <li><a href=""><%= sharedTrips[i].tripName %></a></li>
+           <li><a href="/trips/sharedTrip/<%= sharedTrips[i]._id %>"><%= sharedTrips[i].tripName %></a></li>
         <% } %>
     </ul>
 </body>
