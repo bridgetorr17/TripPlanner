@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body data-trip-id="<%= trip._id%>">
+    <h1>SHARED TRIP!</h1>
     <h1><%= trip.tripName %></h1>
     <a href="/trips/createNew">Start a new trip</a>
     <a href="/dashboard">Go to Dashboard</a>
@@ -37,11 +38,7 @@
     <button type="button" class="hidden" id="aiLocationSuggestion">AI Location Suggestion</button>
     <button type="button" class="hidden" id="saveEdits">Save edits</button>
     <button id="editTrip" class="">Edit this trip</button>
-
-    <form action="/trips/delete/<%= trip.id %>?_method=DELETE" method="POST" id="deleteTrip" class="hidden">
-        <button type="submit">Delete trip</button>
-    </form>
-    
+    <button type="button" class="hidden" id="deleteTrip">Delete trip</button>
 
     <h4>The trip owner is <%= creator %></h4>
     
@@ -54,13 +51,6 @@
         <% } %>
     </ul>
 
-    <div id="addContributorsContainer">
-
-    </div>
-    <button id="addContributors" class="">Add Tripper(s)</button>
-    <button id="saveContributors" class="hidden">Save Contributors</button>
-
     <script src="/js/editTrip.js" type="application/javascript"></script>
-    <script src="/js/addContributor.js" type="application/javascript"></script>
 </body>
 </html>
