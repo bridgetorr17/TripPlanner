@@ -7,12 +7,12 @@
     <title>Document</title>
 </head>
 <body data-trip-id="<%= trip._id%>">
-    <h1><%= trip.tripName %></h1>
+    <h1><%= trip.trip.tripName %></h1>
     <a href="/trips/createNew">Start a new trip</a>
     <a href="/dashboard">Go to Dashboard</a>
     <a href="/logout">Logout</a>
 
-    <h2>Starting in <%= trip.tripOrigin %></h2>
+    <h2>Starting in <%= trip.trip.tripOrigin %></h2>
 
     <span>We are going to</span>
 
@@ -33,11 +33,11 @@
     <button type="button" class="hidden" id="addStopsEdit">Add Stop</button>
     <button type="button" class="hidden" id="aiLocationSuggestion">AI Location Suggestion</button>
     <button type="button" class="hidden" id="saveEdits">Save edits</button>
-    <a href="/trips/edit/<%= trip._id %>">
+    <a href="/trips/edit/<%= trip.trip._id %>">
         <button type="submit">Edit trip</button>
     </a>
 
-    <form action="/trips/delete/<%= trip._id %>?_method=DELETE" method="POST" id="deleteTrip" class="hidden">
+    <form action="/trips/delete/<%= trip.trip._id %>?_method=DELETE" method="POST" id="deleteTrip" class="hidden">
         <button type="submit">Delete trip</button>
     </form>
     

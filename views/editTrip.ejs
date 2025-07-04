@@ -6,19 +6,19 @@
     <title>Document</title>
 </head>
 <body data-trip-id="<%= trip._id%>">
-    <h1>Edit the <%= trip.tripName %> Trip</h1>
+    <h1>Edit the <%= trip.trip.tripName %> Trip</h1>
     <a href="/trips/createNew">Start a new trip</a>
     <a href="/dashboard">Go to Dashboard</a>
     <a href="/logout">Logout</a>
 
-    <h2>Starting in <%= trip.tripOrigin %></h2>
+    <h2>Starting in <%= trip.trip.tripOrigin %></h2>
 
     <span>We are going to</span>
 
     <ul>
-        <% for (let i = 0; i < trip.tripStops.length; i++) { %>
+        <% for (let i = 0; i < trip.trip.tripStops.length; i++) { %>
             <li class="location">
-                <span><%= trip.tripStops[i] %></span>
+                <span><%= trip.trip.tripStops[i] %></span>
                 <img src="/images/trash.jpg" alt="" class="trash">
             </li>
         <% } %>
@@ -26,7 +26,10 @@
 
     <button type="button" id="addStopsEdit">Add Stop</button>
 
-    <a href="/trips/edit/aiSuggestion/<%= trip._id %>">
+    <span> <%= aiSuggestion %> </span>
+    <span> <%= aiSuggestion.reason %></span>
+
+    <a href="/trips/edit/<%= trip.trip._id %>/aiSuggestion">
         <button type="submit">AI Location Suggestion</button>
     </a>
 
@@ -37,13 +40,13 @@
     </form>
     
 
-    <h4>The trip owner is <%= creator %></h4>
+    <h4>The trip owner is <%= trip.creator %></h4>
     
     <h5>Other trippers are</h5>
     <ul>
-        <% for (let i = 0; i < contributors.length; i++) { %>
+        <% for (let i = 0; i < trip.contributors.length; i++) { %>
             <li class="contributor">
-                <span><%= contributors[i] %></span>
+                <span><%= trip.contributors[i] %></span>
             </li>
         <% } %>
     </ul>

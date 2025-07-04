@@ -81,8 +81,9 @@ const getEditTrip = async (req, res) => {
         const tripId = req.params.id;
         const details = await tripDetails(tripId);
 
-        console.log(details);
-        res.render('viewTrip.ejs', {trip: details})
+        res.render('editTrip.ejs', {trip: details,
+                                    aiSuggestion: ''
+        })
     }
     catch(err){
         console.error(err);
@@ -161,13 +162,13 @@ const getSuggestion = async (req, res) => {
         const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY});
 
         const tripId = req.params.id;
-        const trip = await Trip.findById(tripId);
-        let tripStops = trip.tripStops;
+        const details = await tripDetails(tripId);
+        console.log(details);
 
         //request to gemini
         const response = await ai.models.generateContent({
             model: "gemini-2.0-flash",
-            contents: `Consider these locations on a trip: ${tripStops}. Return the full trip, 
+            contents: `Consider these locations on a trip: ${details.trip.tripStops}. Return the full trip, 
             with one added location at the logical positin in the array. Include the reason why 
             this would be a good addition in the 'reason' property. You should only include the 
             reason for your addition, not the already exisiting locations.`,
@@ -190,16 +191,13 @@ const getSuggestion = async (req, res) => {
 
         const responseJSON = {
             'aiSuggestion' : response.text,
-            'originalTrip' : tripStops
+            'originalTrip' : details.trip.tripStops
         }
 
-        console.log(response.text);
-
-        res.render('editTrip.ejs', {trip: trip,
-                                    creator: creatorName,
-                                    contributors: contNames
+        res.render('editTrip.ejs', {trip: details,
+                                    aiSuggestion: response.text
         })
-        //res.status(200).json(responseJSON);
+        console.log('rendered ai suggestion, ', response.text);
     }
     catch(err){
         console.error(err);
