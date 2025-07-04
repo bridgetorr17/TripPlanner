@@ -37,7 +37,11 @@
     <button type="button" class="hidden" id="aiLocationSuggestion">AI Location Suggestion</button>
     <button type="button" class="hidden" id="saveEdits">Save edits</button>
     <button id="editTrip" class="">Edit this trip</button>
-    <button type="button" class="hidden" id="deleteTrip">Delete trip</button>
+
+    <form action="/trips/delete/<%= trip.id %>?_method=DELETE" method="POST" id="deleteTrip" class="hidden">
+        <button type="submit">Delete trip</button>
+    </form>
+    
 
     <script src="/js/editTrip.js" type="application/javascript"></script>
 </body>
