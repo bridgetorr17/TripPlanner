@@ -19,7 +19,7 @@ const getTrip = async (req, res) => {
                 return contUser.userName;
             })
         )
-
+        console.log(trip);
         res.render('viewTrip.ejs', {trip: trip,
                                     creator: creatorName,
                                     contributors: contNames
@@ -56,6 +56,7 @@ const getSharedTrip = async (req, res) => {
 }
 
 const getCreateNewTrip = async (req, res) => {
+    console.log('creating new trip')
     try{
         res.render('createTrip.ejs')
     }
@@ -209,8 +210,10 @@ const getSuggestion = async (req, res) => {
 }
 
 const deleteTrip = async (req, res) => {
+    console.log('delete trip function reached');
     try{
-        await Trip.findOneAndDelete({_id: req.body.tripId});
+        await Trip.findOneAndDelete({_id: req.params.id});
+        console.log('deleted and redirected')
         res.redirect('/dashboard');
     }
     catch(err){
