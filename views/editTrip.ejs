@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body data-trip-id="<%= trip._id%>">
+    <h1>Edit the <%= trip.tripName %> Trip</h1>
+    <a href="/trips/createNew">Start a new trip</a>
+    <a href="/dashboard">Go to Dashboard</a>
+    <a href="/logout">Logout</a>
+
+    <h2>Starting in <%= trip.tripOrigin %></h2>
+
+    <span>We are going to</span>
+
+    <ul>
+        <% for (let i = 0; i < trip.tripStops.length; i++) { %>
+            <li class="location">
+                <span><%= trip.tripStops[i] %></span>
+                <img src="/images/trash.jpg" alt="" class="trash">
+            </li>
+        <% } %>
+    </ul>
+
+    <button type="button" id="addStopsEdit">Add Stop</button>
+
+    <a href="/trips/edit/aiSuggestion/<%= trip._id %>">
+        <button type="submit">AI Location Suggestion</button>
+    </a>
+
+    <button type="button" id="saveEdits">Save edits</button>
+
+    <form action="/trips/delete/<%= trip._id %>?_method=DELETE" method="POST" id="deleteTrip" class="hidden">
+        <button type="submit">Delete trip</button>
+    </form>
+    
+
+    <h4>The trip owner is <%= creator %></h4>
+    
+    <h5>Other trippers are</h5>
+    <ul>
+        <% for (let i = 0; i < contributors.length; i++) { %>
+            <li class="contributor">
+                <span><%= contributors[i] %></span>
+            </li>
+        <% } %>
+    </ul>
+
+    <button id="addContributors">Add Tripper(s)</button>
+    <button id="saveContributors">Save Contributors</button>
+
+    <script src="/js/editTrip.js" type="application/javascript"></script>
+    <script src="/js/addContributor.js" type="application/javascript"></script>
+</body>
+</html>

@@ -17,9 +17,9 @@
     <span>We are going to</span>
 
     <ul>
-        <% for (let i = 0; i < trip.tripStops.length; i++) { %>
+        <% for (let i = 0; i < trip.trip.tripStops.length; i++) { %>
             <li class="location">
-                <span><%= trip.tripStops[i] %></span>
+                <span><%= trip.trip.tripStops[i] %></span>
                 <img src="/images/trash.jpg" alt="" class="trash hidden">
             </li>
         <% } %>
@@ -29,27 +29,26 @@
 
     </div>
 
-    <div id="aiSuggestion">
-
-    </div>
 
     <button type="button" class="hidden" id="addStopsEdit">Add Stop</button>
     <button type="button" class="hidden" id="aiLocationSuggestion">AI Location Suggestion</button>
     <button type="button" class="hidden" id="saveEdits">Save edits</button>
-    <button id="editTrip" class="">Edit this trip</button>
+    <a href="/trips/edit/<%= trip._id %>">
+        <button type="submit">Edit trip</button>
+    </a>
 
     <form action="/trips/delete/<%= trip._id %>?_method=DELETE" method="POST" id="deleteTrip" class="hidden">
         <button type="submit">Delete trip</button>
     </form>
     
 
-    <h4>The trip owner is <%= creator %></h4>
+    <h4>The trip owner is <%= trip.creator %></h4>
     
     <h5>Other trippers are</h5>
     <ul>
-        <% for (let i = 0; i < contributors.length; i++) { %>
+        <% for (let i = 0; i < trip.contributors.length; i++) { %>
             <li class="contributor">
-                <span><%= contributors[i] %></span>
+                <span><%= trip.contributors[i] %></span>
             </li>
         <% } %>
     </ul>

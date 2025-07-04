@@ -10,6 +10,7 @@ router.get('/edit/aiSuggestion/:id', tripController.getSuggestion);
 router.delete('/delete/:id', tripController.deleteTrip);
 router.get('/:id', ensureAuth, tripController.getTrip);
 router.get('/sharedTrip/:id', tripController.getSharedTrip);
+router.get('/edit/:id', tripController.getEditTrip);
 router.put('/edit/:id', tripController.putTripLocationUpdate);
 router.put('/edit/:id/friends', tripController.putNewContributors);
 

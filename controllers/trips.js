@@ -1,5 +1,6 @@
 import Trip from '../models/Trip.js';
 import User from '../models/User.js';
+import {tripDetails} from '../middleware/tripDetails.js';
 import { createPartFromFunctionResponse, GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 dotenv.config({path: './config/.env'})
@@ -7,23 +8,10 @@ dotenv.config({path: './config/.env'})
 const getTrip = async (req, res) => {
     try{
         const tripId = req.params.id;
-        const trip = await Trip.findById(tripId).lean();
-        const creator = await User.findById(trip.createdBy);
-        const creatorName = creator.userName;
+        const details = await tripDetails(tripId);
 
-        const tripContributors = trip.contributors;
-        
-        const contNames = await Promise.all(
-            tripContributors.map(async (cont) => {
-                const contUser = await User.findById(cont);
-                return contUser.userName;
-            })
-        )
-        console.log(trip);
-        res.render('viewTrip.ejs', {trip: trip,
-                                    creator: creatorName,
-                                    contributors: contNames
-        })
+        console.log(details);
+        res.render('viewTrip.ejs', {trip: details})
     }
     catch(err){
         console.error(err);
@@ -33,22 +21,10 @@ const getTrip = async (req, res) => {
 const getSharedTrip = async (req, res) => {
     try{
         const tripId = req.params.id;
-        const trip = await Trip.findById(tripId).lean();
-        const creator = await User.findById(trip.createdBy);
-        const creatorName = creator.userName;
+        const details = await tripDetails(tripId);
 
-        const tripContributors = trip.contributors;
-        
-        const contNames = await Promise.all(
-            tripContributors.map(async (cont) => {
-                const contUser = await User.findById(cont);
-                return contUser.userName;
-            })
-        )
-        res.render('viewSharedTrip.ejs', {trip: trip,
-                                    creator: creatorName,
-                                    contributors: contNames
-        })
+        console.log(details);
+        res.render('viewTrip.ejs', {trip: details})
     }
     catch(err){
         console.error(err);
@@ -95,6 +71,20 @@ const postCreateNewTrip = async (req, res) => {
         res.redirect('/dashboard');
     }
     catch(err) {
+        console.error(err);
+    }
+}
+
+const getEditTrip = async (req, res) => {
+    console.log('edit trip')
+    try{
+        const tripId = req.params.id;
+        const details = await tripDetails(tripId);
+
+        console.log(details);
+        res.render('viewTrip.ejs', {trip: details})
+    }
+    catch(err){
         console.error(err);
     }
 }
@@ -166,6 +156,7 @@ const putNewContributors = async (req, res) => {
 }
 
 const getSuggestion = async (req, res) => {
+    console.log('getting suggestion')
     try{
         const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY});
 
@@ -202,7 +193,13 @@ const getSuggestion = async (req, res) => {
             'originalTrip' : tripStops
         }
 
-        res.status(200).json(responseJSON);
+        console.log(response.text);
+
+        res.render('editTrip.ejs', {trip: trip,
+                                    creator: creatorName,
+                                    contributors: contNames
+        })
+        //res.status(200).json(responseJSON);
     }
     catch(err){
         console.error(err);
@@ -225,6 +222,7 @@ export {getTrip,
         getSharedTrip, 
         getCreateNewTrip, 
         postCreateNewTrip, 
+        getEditTrip,
         putTripLocationUpdate, 
         putNewContributors, 
         getSuggestion, 
