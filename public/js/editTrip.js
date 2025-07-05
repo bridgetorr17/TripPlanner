@@ -133,27 +133,3 @@ document.getElementById('aiLocationSuggestion').addEventListener('click', async 
     container.append(yes);
     container.append(no);
 })
-
-//DELETE request
-document.getElementById('deleteTrip').addEventListener('click', async () => {
-    try{
-        const tripId = document.body.dataset.tripId;
-        const response = await fetch('/trips/delete', {
-            method: 'DELETE',
-            headers: {'Content-type': 'application/json'},
-            body: JSON.stringify({
-                'tripId': tripId
-            })
-        })
-
-        if (response.redirected){
-            window.location.href = response.url;
-        }
-        else {
-            window.location.href = '/dashboard';
-        }
-    }
-    catch(err){
-        console.error(err);
-    }
-})

@@ -1,16 +1,24 @@
 import express from 'express';
 import * as tripController from '../controllers/trips.js';
+import * as editTripController from '../controllers/editing.js';
 import { ensureAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
+//tripController
 router.get('/createNew', tripController.getCreateNewTrip);
 router.post('/createNew', tripController.postCreateNewTrip);
-router.get('/edit/aiSuggestion/:id', tripController.getSuggestion);
-router.delete('/delete', tripController.deleteTrip);
+router.delete('/delete/:id', tripController.deleteTrip);
 router.get('/:id', ensureAuth, tripController.getTrip);
 router.get('/sharedTrip/:id', tripController.getSharedTrip);
-router.put('/edit/:id', tripController.putTripLocationUpdate);
-router.put('/edit/:id/friends', tripController.putNewContributors);
+
+//editTripController
+router.put('/removeLocation/:id', editTripController.removeLocation);
+router.put('/addLocation/:id', editTripController.addLocation);
+router.get('/aiSuggestion/:id', editTripController.getSuggestion);
+router.put('/aiSuggestion/:id', editTripController.addLocation);
+router.get('/edit/:id', editTripController.getEditTrip);
+router.put('/edit/:id/friends', editTripController.putNewContributors);
+
 
 export {router};
