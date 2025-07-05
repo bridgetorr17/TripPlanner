@@ -41,29 +41,22 @@ const removeLocation = async (req, res) => {
     }
 }
 
-const putTripLocationUpdate = async (req, res) => {
+const addLocation = async (req, res) => {
     try{
-        const newStops = req.body.newStops;
         const tripId = req.params.id;
+        const newLocation = req.body.newLocation;
 
-        if(!Array.isArray(newStops)){
-            return res.status(400).sed('newStops must be an array');
-        }
+        await Trip.findByIdAndUpdate(
+            tripId,
+            { $push: { tripStops: newLocation } },
+            { new: true }
+        );
 
-        const trip = await Trip.findById(tripId);
+        const details = await tripDetails(tripId);
 
-        if(!trip){
-            return res.status(404).send('Trip not found');
-        }
-
-        await Trip.updateOne(
-            {_id: tripId},
-            {$set: {
-                tripStops: newStops
-            }
-        });
-
-        res.status(200).send('Trip stops updated successfully')
+        res.render('editTrip.ejs', {trip: details,
+                                    aiSuggestion: ''
+        })
     }
     catch(err){
         console.error(err);
@@ -158,6 +151,6 @@ const getSuggestion = async (req, res) => {
 
 export {getEditTrip,
         removeLocation,
-        putTripLocationUpdate, 
+        addLocation, 
         putNewContributors, 
         getSuggestion};

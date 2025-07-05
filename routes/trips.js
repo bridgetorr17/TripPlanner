@@ -14,8 +14,8 @@ router.get('/sharedTrip/:id', tripController.getSharedTrip);
 
 //editTripController
 router.put('/removeLocation/:id', editTripController.removeLocation);
+router.put('/addLocation/:id', editTripController.addLocation);
 router.get('/edit/:id', editTripController.getEditTrip);
-router.put('/edit/:id', editTripController.putTripLocationUpdate);
 router.put('/edit/:id/friends', editTripController.putNewContributors);
 router.get('/edit/:id/aiSuggestion', editTripController.getSuggestion);
 

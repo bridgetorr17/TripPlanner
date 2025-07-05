@@ -29,7 +29,11 @@
         <% } %>
     </ul>
 
-    <button type="button" id="addStopsEdit">Add Stop</button>
+    <form action="/trips/addLocation/<%= trip.trip._id %>?_method=PUT" method="POST">
+        <label for="newLocation">New Location</label>
+        <input type="text" id="newLocation" name="newLocation" required>
+        <button type="submit">Add Stop</button>
+    </form>
 
     <span> <%= aiSuggestion %> </span>
 
