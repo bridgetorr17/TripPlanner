@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
     <title>Document</title>
 </head>
 <body data-trip-id="<%= trip._id%>">
@@ -17,23 +18,24 @@
 
     <ul>
         <% for (let i = 0; i < trip.trip.tripStops.length; i++) { %>
-            <li class="location">
-                <span><%= trip.trip.tripStops[i] %></span>
-                <img src="/images/trash.jpg" alt="" class="trash">
-            </li>
+            <form action="/trips/removeLocation/<%= trip.trip._id %>?_method=PUT&location=<%= trip.trip.tripStops[i] %>" method="POST">
+                <li class="location">
+                    <span><%= trip.trip.tripStops[i] %></span>
+                    <button type="submit">
+                        <img src="/images/trash.jpg" alt="" class="trash">
+                    </button>
+                </li>
+            </form>
         <% } %>
     </ul>
 
     <button type="button" id="addStopsEdit">Add Stop</button>
 
     <span> <%= aiSuggestion %> </span>
-    <span> <%= aiSuggestion.reason %></span>
 
     <a href="/trips/edit/<%= trip.trip._id %>/aiSuggestion">
         <button type="submit">AI Location Suggestion</button>
     </a>
-
-    <button type="button" id="saveEdits">Save edits</button>
 
     <form action="/trips/delete/<%= trip._id %>?_method=DELETE" method="POST" id="deleteTrip" class="hidden">
         <button type="submit">Delete trip</button>
@@ -51,10 +53,5 @@
         <% } %>
     </ul>
 
-    <button id="addContributors">Add Tripper(s)</button>
-    <button id="saveContributors">Save Contributors</button>
-
-    <script src="/js/editTrip.js" type="application/javascript"></script>
-    <script src="/js/addContributor.js" type="application/javascript"></script>
 </body>
 </html>
