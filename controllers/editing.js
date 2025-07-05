@@ -11,7 +11,12 @@ const getEditTrip = async (req, res) => {
         const details = await tripDetails(tripId);
 
         res.render('editTrip.ejs', {trip: details,
-                                    aiSuggestion: ''
+                                    ai: {
+                                        suggestion: '',
+                                        reason: '',
+                                        action: 'GET',
+                                        actionName: 'Get suggested location'
+                                    }
         })
     }
     catch(err){
@@ -33,7 +38,12 @@ const removeLocation = async (req, res) => {
         const details = await tripDetails(tripId);
 
         res.render('editTrip.ejs', {trip: details,
-                                    aiSuggestion: ''
+                                    ai: {
+                                        suggestion: '',
+                                        reason: '',
+                                        action: 'GET',
+                                        actionName: 'Get suggested location'
+                                    }
         })
     }
     catch(err){
@@ -55,7 +65,12 @@ const addLocation = async (req, res) => {
         const details = await tripDetails(tripId);
 
         res.render('editTrip.ejs', {trip: details,
-                                    aiSuggestion: ''
+                                    ai: {
+                                        suggestion: '',
+                                        reason: '',
+                                        action: 'GET',
+                                        actionName: 'Get suggested location'
+                                    }
         })
     }
     catch(err){
@@ -107,7 +122,6 @@ const getSuggestion = async (req, res) => {
 
         const tripId = req.params.id;
         const details = await tripDetails(tripId);
-        console.log(details);
 
         //request to gemini
         const response = await ai.models.generateContent({
@@ -133,15 +147,20 @@ const getSuggestion = async (req, res) => {
             }
         });
 
-        const responseJSON = {
-            'aiSuggestion' : response.text,
-            'originalTrip' : details.trip.tripStops
-        }
+        const parsed = JSON.parse(response.text);
+        console.log(parsed);
+        console.log(parsed.reason);
 
         res.render('editTrip.ejs', {trip: details,
-                                    aiSuggestion: response.text
+                                    ai: {
+                                        suggestion: parsed.addedStop,
+                                        reason: parsed.reason,
+                                        action: 'PUT',
+                                        actionName: 'Add suggested location'
+                                    }
         })
-        console.log('rendered ai suggestion, ', response.text);
+
+        console.log('rendered the page')
     }
     catch(err){
         console.error(err);

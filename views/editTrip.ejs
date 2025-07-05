@@ -35,16 +35,19 @@
         <button type="submit">Add Stop</button>
     </form>
 
-    <span> <%= aiSuggestion %> </span>
-
-    <a href="/trips/edit/<%= trip.trip._id %>/aiSuggestion">
-        <button type="submit">AI Location Suggestion</button>
-    </a>
+    <section>
+        <span> <%= ai.suggestion %> </span>
+        <br>
+        <span> <%= ai.reason %> </span>
+        <form action="/trips/aiSuggestion/<%= trip.trip._id %>?_method=<%= ai.action %>" method="POST">
+            <input type="hidden" name="newLocation" value="<%= ai.suggestion %>">
+            <button type="submit"> <%= ai.actionName %> </button>
+        </form>
+    </section>
 
     <form action="/trips/delete/<%= trip._id %>?_method=DELETE" method="POST" id="deleteTrip" class="hidden">
         <button type="submit">Delete trip</button>
     </form>
-    
 
     <h4>The trip owner is <%= trip.creator %></h4>
     
