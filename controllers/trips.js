@@ -18,19 +18,6 @@ const getTrip = async (req, res) => {
     }
 }
 
-const getSharedTrip = async (req, res) => {
-    try{
-        const tripId = req.params.id;
-        const details = await tripDetails(tripId);
-
-        console.log(details);
-        res.render('viewTrip.ejs', {trip: details})
-    }
-    catch(err){
-        console.error(err);
-    }
-}
-
 const getCreateNewTrip = async (req, res) => {
     console.log('creating new trip')
     try{
@@ -87,7 +74,6 @@ const deleteTrip = async (req, res) => {
 }
 
 export {getTrip, 
-        getSharedTrip, 
         getCreateNewTrip, 
         postCreateNewTrip, 
         deleteTrip};

@@ -7,13 +7,15 @@ const tripDetails = async (tripId) => {
     const creatorName = creator.userName;
 
     const tripContributors = trip.contributors;
-    
-    const contNames = await Promise.all(
-        tripContributors.map(async (cont) => {
-            const contUser = await User.findById(cont);
-            return contUser.userName;
-        })
-    )
+    const contNames = [];
+    if(tripContributors[0] !== null) {
+        contNames = await Promise.all(
+            tripContributors.map(async (cont) => {
+                const contUser = await User.findById(cont);
+                return contUser.userName;
+            })
+        )
+    }
 
     return {
         trip: trip,
