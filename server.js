@@ -14,8 +14,10 @@ dotenv.config({path: './config/.env'})
 import passport from './config/passport.js'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
-
 import flash from 'express-flash'
+
+//method override
+import methodOverride from 'method-override';
 
 //routers
 import {router as homeRoutes} from './routes/home.js';
@@ -28,6 +30,9 @@ app.set('view engine', 'ejs')
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+
+//for put and delete requests
+app.use(methodOverride("_method"));
 
 //sessions
 const store = MongoStore.create({mongoUrl: process.env.DB_STRING})
@@ -54,5 +59,5 @@ app.use('/dashboard', dashboardRoutes);
 app.use('/trips', tripRoutes);
 
 app.listen(8000, () => {
-    console.log('server running');
+    console.log('server running on port 8000');
 })

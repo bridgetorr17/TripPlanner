@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Document</title>
+</head>
+<body data-trip-id="<%= trip._id%>">
+    <h1>Edit the <%= trip.trip.tripName %> Trip</h1>
+    <a href="/trips/createNew">Start a new trip</a>
+    <a href="/dashboard">Go to Dashboard</a>
+    <a href="/logout">Logout</a>
+
+    <h2>Starting in <%= trip.trip.tripOrigin %></h2>
+
+    <span>We are going to</span>
+
+    <ul>
+        <% for (let i = 0; i < trip.trip.tripStops.length; i++) { %>
+            <form action="/trips/removeLocation/<%= trip.trip._id %>?_method=PUT&location=<%= trip.trip.tripStops[i] %>" method="POST">
+                <li class="location">
+                    <span><%= trip.trip.tripStops[i] %></span>
+                    <button type="submit">
+                        <img src="/images/trash.jpg" alt="" class="trash">
+                    </button>
+                </li>
+            </form>
+        <% } %>
+    </ul>
+
+    <form action="/trips/addLocation/<%= trip.trip._id %>?_method=PUT" method="POST">
+        <label for="newLocation">New Location</label>
+        <input type="text" id="newLocation" name="newLocation" required>
+        <button type="submit">Add Stop</button>
+    </form>
+
+    <section>
+        <span> <%= ai.suggestion %> </span>
+        <br>
+        <span> <%= ai.reason %> </span>
+        <form action="/trips/aiSuggestion/<%= trip.trip._id %>?_method=<%= ai.action %>" method="POST">
+            <input type="hidden" name="newLocation" value="<%= ai.suggestion %>">
+            <button type="submit"> <%= ai.actionName %> </button>
+        </form>
+    </section>
+
+    <form action="/trips/delete/<%= trip.trip._id %>?_method=DELETE" method="POST">
+        <button type="submit">Delete trip</button>
+    </form>
+
+    <h4>The trip owner is <%= trip.creator %></h4>
+    
+    <h5>Other trippers are</h5>
+    <ul>
+        <% for (let i = 0; i < trip.contributors.length; i++) { %>
+            <li class="contributor">
+                <span><%= trip.contributors[i] %></span>
+            </li>
+        <% } %>
+    </ul>
+
+    <%if(user.id === trip.trip.createdBy.toString()) { %>
+        <form action="/trips/addContributor/<%= trip.trip._id %>?_method=PUT" method="POST">
+            <label for="newTripper">New Tripper</label>
+            <input type="text" id="newTripper" name="newTripper" required placeholder="User name here">
+            <button type="submit">Add Contributor</button>
+        </form>
+    <%}%>
+
+    <a href="/trips/<%= trip.trip._id %>">Save Edits</a>
+</body>
+</html>

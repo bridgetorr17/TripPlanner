@@ -3,60 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/styles.css">
     <title>Document</title>
 </head>
 <body data-trip-id="<%= trip._id%>">
-    <h1><%= trip.tripName %></h1>
+    <h1><%= trip.trip.tripName %></h1>
     <a href="/trips/createNew">Start a new trip</a>
     <a href="/dashboard">Go to Dashboard</a>
     <a href="/logout">Logout</a>
 
-    <h2>Starting in <%= trip.tripOrigin %></h2>
+    <h2>Starting in <%= trip.trip.tripOrigin %></h2>
 
     <span>We are going to</span>
 
     <ul>
-        <% for (let i = 0; i < trip.tripStops.length; i++) { %>
+        <% for (let i = 0; i < trip.trip.tripStops.length; i++) { %>
             <li class="location">
-                <span><%= trip.tripStops[i] %></span>
-                <img src="/images/trash.jpg" alt="" class="trash hidden">
+                <span><%= trip.trip.tripStops[i] %></span>
             </li>
         <% } %>
     </ul>
-    
-    <div id="editsContainer">
 
-    </div>
+    <a href="/trips/edit/<%= trip.trip._id %>">
+        <button type="submit">Edit trip</button>
+    </a>
 
-    <div id="aiSuggestion">
-
-    </div>
-
-    <button type="button" class="hidden" id="addStopsEdit">Add Stop</button>
-    <button type="button" class="hidden" id="aiLocationSuggestion">AI Location Suggestion</button>
-    <button type="button" class="hidden" id="saveEdits">Save edits</button>
-    <button id="editTrip" class="">Edit this trip</button>
-    <button type="button" class="hidden" id="deleteTrip">Delete trip</button>
-
-    <h4>The trip owner is <%= creator %></h4>
+    <h4>The trip owner is <%= trip.creator %></h4>
     
     <h5>Other trippers are</h5>
     <ul>
-        <% for (let i = 0; i < contributors.length; i++) { %>
+        <% for (let i = 0; i < trip.contributors.length; i++) { %>
             <li class="contributor">
-                <span><%= contributors[i] %></span>
+                <span><%= trip.contributors[i] %></span>
             </li>
         <% } %>
     </ul>
 
-    <div id="addContributorsContainer">
-
-    </div>
-    <button id="addContributors" class="">Add Tripper(s)</button>
-    <button id="saveContributors" class="hidden">Save Contributors</button>
-
-    <script src="/js/editTrip.js" type="application/javascript"></script>
-    <script src="/js/addContributor.js" type="application/javascript"></script>
 </body>
 </html>
