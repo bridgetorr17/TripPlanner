@@ -60,5 +60,14 @@
         <% } %>
     </ul>
 
+    <%if(user.id === trip.trip.createdBy.toString()) { %>
+        <form action="/trips/addContributor/<%= trip.trip._id %>?_method=PUT" method="POST">
+            <label for="newTripper">New Tripper</label>
+            <input type="text" id="newTripper" name="newTripper" required placeholder="User name here">
+            <button type="submit">Add Contributor</button>
+        </form>
+    <%}%>
+
+    <a href="/trips/<%= trip.trip._id %>">Save Edits</a>
 </body>
 </html>

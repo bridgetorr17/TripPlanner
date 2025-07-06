@@ -10,13 +10,17 @@ const getEditTrip = async (req, res) => {
         const tripId = req.params.id;
         const details = await tripDetails(tripId);
 
+        console.log(req.user.id)
+        console.log(details.trip.createdBy.toString())
+
         res.render('editTrip.ejs', {trip: details,
                                     ai: {
                                         suggestion: '',
                                         reason: '',
                                         action: 'GET',
                                         actionName: 'Get suggested location'
-                                    }
+                                    },
+                                    user: req.user
         })
     }
     catch(err){
@@ -43,7 +47,8 @@ const removeLocation = async (req, res) => {
                                         reason: '',
                                         action: 'GET',
                                         actionName: 'Get suggested location'
-                                    }
+                                    },
+                                    user: req.user
         })
     }
     catch(err){
@@ -63,14 +68,15 @@ const addLocation = async (req, res) => {
         );
 
         const details = await tripDetails(tripId);
-
+        console.log(details);
         res.render('editTrip.ejs', {trip: details,
                                     ai: {
                                         suggestion: '',
                                         reason: '',
                                         action: 'GET',
                                         actionName: 'Get suggested location'
-                                    }
+                                    },
+                                    user: req.user
         })
     }
     catch(err){
@@ -80,35 +86,34 @@ const addLocation = async (req, res) => {
 
 const putNewContributors = async (req, res) => {
     try{
-        const newContributors = req.body.newContributors;
+        const newContributor = req.body.newTripper;
         const tripId = req.params.id;
-        console.log(`friends to add: ${newContributors}`)
+        console.log(`friend to add: ${newContributor}`)
 
-        if(!Array.isArray(newContributors)){
-            return res.status(400).sed('newStops must be an array');
-        }
-
-        const newContributorIds = await Promise.all(
-            newContributors.map(async (cont) => {
-                const user = await User.findOne({ userName: cont })
-                return user ? user._id : null;
-            })
-        );
+        const newCont = await User.findOne({ userName: newContributor });
 
         //trip that is being updated
         const trip = await Trip.findById(tripId);
 
-        const validIds = newContributorIds.filter(id => id && id.toString() !== trip.createdBy.toString);
-
         //add new contributors to trip by id(if not already there)
         await Trip.findByIdAndUpdate(
             tripId,
-            { $addToSet: {contributors: {$each: validIds} } },
+            { $push: {contributors: newCont._id} },
             {new: true}
         );
 
-        // Respond with JSON and redirect info
-        return res.json({ success: true, redirectTo: `/trips/${tripId}` });
+        const details = await tripDetails(tripId);
+
+        console.log(details);
+        res.render('editTrip.ejs', {trip: details,
+                                    ai: {
+                                        suggestion: '',
+                                        reason: '',
+                                        action: 'GET',
+                                        actionName: 'Get suggested location'
+                                    },
+                                    user: req.user
+        })
     }
     catch(err){
         console.error(err);
@@ -116,7 +121,7 @@ const putNewContributors = async (req, res) => {
 }
 
 const getSuggestion = async (req, res) => {
-    console.log('getting suggestion')
+
     try{
         const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY});
 
@@ -148,8 +153,6 @@ const getSuggestion = async (req, res) => {
         });
 
         const parsed = JSON.parse(response.text);
-        console.log(parsed);
-        console.log(parsed.reason);
 
         res.render('editTrip.ejs', {trip: details,
                                     ai: {
@@ -157,10 +160,10 @@ const getSuggestion = async (req, res) => {
                                         reason: parsed.reason,
                                         action: 'PUT',
                                         actionName: 'Add suggested location'
-                                    }
+                                    },
+                                    user: req.user
         })
 
-        console.log('rendered the page')
     }
     catch(err){
         console.error(err);
